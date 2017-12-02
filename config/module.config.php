@@ -12,21 +12,26 @@ return [
 
     'service_manager' => [
         'factories' => [
-            Session\SessionManager::class => null
+            Module::class =>
+                Factory\ModuleFactory::class,
+            Session\SessionManager::class =>
+                Factory\SessionManagerFactory::class
         ]
     ],
 
     Module::class => [
-        'config' => [
-            'class' => Session\Config\SessionConfig::class,
-            'options' => [
-                'name' => 'myapp',
+        Session\SessionManager::class => [
+            'config' => [
+                'class' => Session\Config\SessionConfig::class,
+                'options' => [
+                    'name' => Module::class,
+                ],
             ],
-        ],
-        'storage' => Session\Storage\SessionArrayStorage::class,
-        'validators' => [
-            Session\Validator\RemoteAddr::class,
-            Session\Validator\HttpUserAgent::class,
-        ],
+            'storage' => Session\Storage\SessionArrayStorage::class,
+            'validators' => [
+                Session\Validator\RemoteAddr::class,
+                Session\Validator\HttpUserAgent::class,
+            ],
+        ]
     ]
 ];

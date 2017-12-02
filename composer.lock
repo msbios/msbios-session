@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2914a440b8d4165f33a31b7aa8dfc9a",
+    "content-hash": "4ebe17d312c6d188de1e8069b14bb07e",
     "packages": [
         {
             "name": "zendframework/zend-eventmanager",

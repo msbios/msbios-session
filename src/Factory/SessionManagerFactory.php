@@ -7,6 +7,7 @@
 namespace MSBios\Session\Factory;
 
 use Interop\Container\ContainerInterface;
+use MSBios\Session\Module;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\Session\Config\SessionConfig;
 use Zend\Session\Container;
@@ -27,9 +28,9 @@ class SessionManagerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $config = $container->get('config');
-        if (!isset($config['session'])) {
-
+        /** @var array $config */
+        $config = $container->get(Module::class);
+        if (!isset($config[SessionManager::class])) {
             /** @var ManagerInterface $sessionManager */
             $sessionManager = new SessionManager;
             Container::setDefaultManager($sessionManager);
@@ -37,7 +38,7 @@ class SessionManagerFactory implements FactoryInterface
         }
 
         /** @var array $session */
-        $session = $config['session'];
+        $session = $config[SessionManager::class];
 
         /** @var mixed $sessionConfig */
         $sessionConfig = null;

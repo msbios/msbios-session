@@ -29,7 +29,8 @@
   "require-dev": {
     "msbios/application": "^1.0",
     "msbios/test": "^1.0",
-    "msbios/debug": "^1.0"
+    "msbios/debug": "^1.0",
+    "san/san-session-toolbar": "^1.0"
   },
   "scripts": {
     "cs-check": "phpcs",
@@ -40,7 +41,6 @@
     ],
     "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
     "upload-coverage": "coveralls -v",
-    "themes": "cd public && ln -s ../themes/default/public default",
     "serve": "php -S 0.0.0.0:3107 -t public public/index.php",
     "commit": "git add . && git commit -a -m \"Lazy Composer Commiter\" && git push"
   },

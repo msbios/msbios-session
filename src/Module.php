@@ -60,6 +60,15 @@ class Module implements
      */
     public function onBootstrap(EventInterface $e)
     {
+        // TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // Hard override
+        $e->getTarget()
+            ->getServiceManager()
+            ->get('ViewHelperManager')
+            ->get('partial')
+            ->setView($e->getTarget()
+                ->getServiceManager()->get('Zend\View\Renderer\PhpRenderer'));
+
         /** @var ServiceLocatorInterface $serviceManager */
         $serviceManager = $e->getApplication()
             ->getServiceManager();

@@ -7,8 +7,6 @@ return [
     // Retrieve list of modules used in this application.
     'modules' => [
         'Zend\Log',
-        'MSBios\Test',
-        'MSBios\Application',
         'Zend\Mvc\Plugin\FilePrg',
         'Zend\Form',
         'Zend\Hydrator',
@@ -18,15 +16,19 @@ return [
         'Zend\Mvc\Plugin\Identity',
         'Zend\Mvc\Plugin\Prg',
         'Zend\Router',
+        'Zend\Navigation',
         'Zend\Validator',
+        'Zend\I18n',
+        'MSBios\Application',
+        'MSBios\Test',
         'MSBios\Theme',
         'MSBios\Widget',
         'MSBios\Assetic',
         'MSBios\I18n',
-        'Zend\I18n',
         'MSBios\Navigation',
-        'Zend\Navigation',
+        'MSBios\Session',
         'ZendDeveloperTools',
+        'SanSessionToolbar',
     ],
     // These are various options for the listeners attached to the ModuleManager
     'module_listener_options' => [

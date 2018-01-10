@@ -24,7 +24,8 @@
     }
   },
   "require": {
-    "zendframework/zend-session": "^2.8"
+    "zendframework/zend-session": "^2.8",
+    "mongodb/mongodb": "^1.2"
   },
   "require-dev": {
     "msbios/application": "^1.0",
@@ -41,12 +42,19 @@
     ],
     "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
     "upload-coverage": "coveralls -v",
-    "serve": "php -S 0.0.0.0:3107 -t public public/index.php",
-    "commit": "git add . && git commit -a -m \"Lazy Composer Commiter\" && git push"
+    "serve": "php -S 0.0.0.0:3107 -t public index.php",
+    "commit": "git add . && git commit -a -m \"Lazy Composer Commiter\" && git push",
+    "mongodb-start-osx": "brew services start mongodb"
   },
   "extra": {
     "zf": {
       "component": "MSBios\\Session"
     }
-  }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://packages.zendframework.com"
+    }
+  ]
 }

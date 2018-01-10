@@ -6,7 +6,7 @@
 
 namespace MSBios\Session;
 
-use \Zend\Session;
+use Zend\Session;
 
 return [
 
@@ -14,24 +14,41 @@ return [
         'factories' => [
             Module::class =>
                 Factory\ModuleFactory::class,
-            Session\SessionManager::class =>
-                Factory\SessionManagerFactory::class
+            Session\SaveHandler\SaveHandlerInterface::class =>
+                Factory\MongoDBHandlerFactory::class
         ]
     ],
 
+    'session_config' => [
+        'name' => 'openpower'
+    ],
+
+    'session_storage' => [
+        'type' => Session\Storage\SessionArrayStorage::class,
+        'options' => []
+    ],
+
+    'session_manager' => [
+        'validators' => [
+            Session\Validator\RemoteAddr::class,
+            Session\Validator\HttpUserAgent::class,
+        ],
+        'options' => []
+    ],
+
     Module::class => [
-        Session\SessionManager::class => [
-            'config' => [
-                'class' => Session\Config\SessionConfig::class,
-                'options' => [
-                    'name' => Module::class,
-                ],
-            ],
-            'storage' => Session\Storage\SessionArrayStorage::class,
-            'validators' => [
-                Session\Validator\RemoteAddr::class,
-                Session\Validator\HttpUserAgent::class,
-            ],
-        ]
+//        Session\SessionManager::class => [
+////            'config' => [
+////                'class' => Session\Config\SessionConfig::class,
+////                'options' => [
+////                    'name' => Module::class,
+////                ],
+////            ],
+////            'storage' => Session\Storage\SessionArrayStorage::class,
+////            'validators' => [
+////                Session\Validator\RemoteAddr::class,
+////                Session\Validator\HttpUserAgent::class,
+////            ],
+//        ]
     ]
 ];

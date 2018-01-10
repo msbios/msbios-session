@@ -13,11 +13,8 @@ use Zend\Loader\StandardAutoloader;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Session\Container;
 use Zend\Session\ManagerInterface;
 use Zend\Session\SessionManager;
-use Zend\Session\Validator\HttpUserAgent;
-use Zend\Session\Validator\RemoteAddr;
 
 /**
  * Class Module
@@ -31,6 +28,9 @@ class Module implements
     /** @const VERSION */
     const VERSION = '1.0.0';
 
+    /**
+     * @return mixed
+     */
     public function getConfig()
     {
         return include __DIR__ . '/../config/module.config.php';
@@ -60,15 +60,6 @@ class Module implements
      */
     public function onBootstrap(EventInterface $e)
     {
-        // TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // Hard override
-        $e->getTarget()
-            ->getServiceManager()
-            ->get('ViewHelperManager')
-            ->get('partial')
-            ->setView($e->getTarget()
-                ->getServiceManager()->get('Zend\View\Renderer\PhpRenderer'));
-
         /** @var ServiceLocatorInterface $serviceManager */
         $serviceManager = $e->getApplication()
             ->getServiceManager();
@@ -77,46 +68,46 @@ class Module implements
         $session = $serviceManager->get(SessionManager::class);
         $session->start();
 
-        /** @var Container $container */
-        $container = new Container('initialized');
-
-        if (isset($container->init)) {
-            return;
-        }
-
-        $request = $serviceManager->get('Request');
-
-        $session->regenerateId(true);
-        $container->init = 1;
-        $container->remoteAddr = $request->getServer()->get('REMOTE_ADDR');
-        $container->httpUserAgent = $request->getServer()->get('HTTP_USER_AGENT');
-
-        $config = $serviceManager->get('Config');
-        if (!isset($config['session'])) {
-            return;
-        }
-
-        $sessionConfig = $config['session'];
-
-        if (!isset($sessionConfig['validators'])) {
-            return;
-        }
-
-        $chain = $session->getValidatorChain();
-
-        foreach ($sessionConfig['validators'] as $validator) {
-            switch ($validator) {
-                case HttpUserAgent::class:
-                    $validator = new $validator($container->httpUserAgent);
-                    break;
-                case RemoteAddr::class:
-                    $validator = new $validator($container->remoteAddr);
-                    break;
-                default:
-                    $validator = new $validator();
-            }
-
-            $chain->attach('session.validate', [$validator, 'isValid']);
-        }
+        ///** @var Container $container */
+        //$container = new Container('initialized');
+        //
+        //if (isset($container->init)) {
+        //    return;
+        //}
+        //
+        //$request = $serviceManager->get('Request');
+        //
+        //$session->regenerateId(true);
+        //$container->init = 1;
+        //$container->remoteAddr = $request->getServer()->get('REMOTE_ADDR');
+        //$container->httpUserAgent = $request->getServer()->get('HTTP_USER_AGENT');
+        //
+        //$config = $serviceManager->get('Config');
+        //if (!isset($config['session'])) {
+        //    return;
+        //}
+        //
+        //$sessionConfig = $config['session'];
+        //
+        //if (!isset($sessionConfig['validators'])) {
+        //    return;
+        //}
+        //
+        //$chain = $session->getValidatorChain();
+        //
+        //foreach ($sessionConfig['validators'] as $validator) {
+        //    switch ($validator) {
+        //        case HttpUserAgent::class:
+        //            $validator = new $validator($container->httpUserAgent);
+        //            break;
+        //        case RemoteAddr::class:
+        //            $validator = new $validator($container->remoteAddr);
+        //            break;
+        //        default:
+        //            $validator = new $validator();
+        //    }
+        //
+        //    $chain->attach('session.validate', [$validator, 'isValid']);
+        //}
     }
 }

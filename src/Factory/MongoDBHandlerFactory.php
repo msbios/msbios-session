@@ -27,9 +27,6 @@ class MongoDBHandlerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-
-        echo __METHOD__; die();
-
         /** @var array $options */
         $options = $container->get(Module::class);
 

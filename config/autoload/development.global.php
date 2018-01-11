@@ -7,6 +7,7 @@
 namespace MSBios\Session;
 
 use MSBios\Session\Initializer\ContainerInitializer;
+use MSBios\Session\Initializer\SessionManagerInitializer;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
@@ -21,7 +22,8 @@ return [
                 Controller\IndexController::class
         ],
         'initializers' => [
-            new ContainerInitializer
+            new ContainerInitializer,
+            new SessionManagerInitializer
         ]
     ],
 

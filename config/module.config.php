@@ -14,13 +14,17 @@ return [
         'factories' => [
             Module::class =>
                 Factory\ModuleFactory::class,
+
+            ContainerInterface::class =>
+                Factory\ContainerFactory::class,
+
             Session\SaveHandler\SaveHandlerInterface::class =>
                 Factory\MongoDBHandlerFactory::class
         ]
     ],
 
     'session_config' => [
-        'name' => 'openpower'
+        'name' => 'msbios-session'
     ],
 
     'session_storage' => [
@@ -30,25 +34,34 @@ return [
 
     'session_manager' => [
         'validators' => [
-            Session\Validator\RemoteAddr::class,
-            Session\Validator\HttpUserAgent::class,
+            // Session\Validator\RemoteAddr::class,
+            // Session\Validator\HttpUserAgent::class,
         ],
         'options' => []
     ],
 
     Module::class => [
-//        Session\SessionManager::class => [
-////            'config' => [
-////                'class' => Session\Config\SessionConfig::class,
-////                'options' => [
-////                    'name' => Module::class,
-////                ],
-////            ],
-////            'storage' => Session\Storage\SessionArrayStorage::class,
-////            'validators' => [
-////                Session\Validator\RemoteAddr::class,
-////                Session\Validator\HttpUserAgent::class,
-////            ],
-//        ]
+
+        /**
+         *
+         * Expects: string
+         * Default: \Module\Session\Module
+         */
+        'default_container_name' => Module::class,
+
+        /**
+         *
+         * Expects: boolean
+         * Default: false
+         */
+        'use_save_handler' => true,
+
+        /**
+         *
+         */
+        Session\SaveHandler\MongoDBOptions::class => [
+            'database' => 'some-database-name',
+            'collection' => 'some-collection-name',
+        ]
     ]
 ];

@@ -12,7 +12,6 @@ use MSBios\Session\Module;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\Session\SaveHandler\MongoDB;
 use Zend\Session\SaveHandler\MongoDBOptions;
-use Zend\Stdlib\ParameterObjectInterface;
 
 /**
  * Class MongoDBHandlerFactory
@@ -28,15 +27,15 @@ class MongoDBHandlerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /** @var Client $client */
-        $client = new Client;
 
-        /** @var ParameterObjectInterface $options */
-        $options = new MongoDBOptions([
-            'database' => 'openpower',
-            'collection' => 'sessions',
-        ]);
+        echo __METHOD__; die();
 
-        return new MongoDB($client, $options);
+        /** @var array $options */
+        $options = $container->get(Module::class);
+
+        return new MongoDB(
+            $container->get(Client::class),
+            new MongoDBOptions($options[MongoDBOptions::class])
+        );
     }
 }

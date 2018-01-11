@@ -9,21 +9,24 @@ namespace MSBios\Session\Factory;
 use Interop\Container\ContainerInterface;
 use MSBios\Session\Module;
 use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\Session\Container;
 
 /**
- * Class ModuleFactory
+ * Class ContainerFactory
  * @package MSBios\Session\Factory
  */
-class ModuleFactory implements FactoryInterface
+class ContainerFactory implements FactoryInterface
 {
     /**
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
-     * @return mixed
+     * @return Container
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return $container->get('config')[Module::class];
+        /** @var array $options */
+        $options = $container->get(Module::class);
+        return new Container($options['default_container_name']);
     }
 }

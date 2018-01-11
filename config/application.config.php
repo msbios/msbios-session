@@ -6,6 +6,7 @@
 return [
     // Retrieve list of modules used in this application.
     'modules' => [
+
         'Zend\I18n',
         'Zend\Mvc\Plugin\FilePrg',
         'Zend\Form',
@@ -26,6 +27,7 @@ return [
         'MSBios\Widget',
         'MSBios\I18n',
         'MSBios\Navigation',
+        'MSBios\MongoDB',
         'MSBios\Session',
         'ZendDeveloperTools',
         'SanSessionToolbar'

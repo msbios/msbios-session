@@ -25,7 +25,7 @@
   },
   "require": {
     "zendframework/zend-session": "^2.8",
-    "mongodb/mongodb": "^1.2"
+    "msbios/mongodb": "^1.0"
   },
   "require-dev": {
     "msbios/application": "^1.0",

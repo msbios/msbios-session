@@ -34,7 +34,7 @@ class SessionManagerFactory implements FactoryInterface
 
         /** @var array $config */
         $config = $container->get(Module::class);
-        if (!isset($config[SessionManager::class])) {
+        if (! isset($config[SessionManager::class])) {
             /** @var ManagerInterface $sessionManager */
             $sessionManager = new SessionManager;
             Container::setDefaultManager($sessionManager);
@@ -83,7 +83,9 @@ class SessionManagerFactory implements FactoryInterface
 
         /** @var ManagerInterface $sessionManager */
         $sessionManager = new SessionManager(
-            $sessionConfig, $sessionStorage, $sessionSaveHandler
+            $sessionConfig,
+            $sessionStorage,
+            $sessionSaveHandler
         );
 
         Container::setDefaultManager($sessionManager);

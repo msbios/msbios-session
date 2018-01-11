@@ -17,7 +17,7 @@ use Zend\Session\SaveHandler\MongoDBOptions;
  * Class MongoDBHandlerFactory
  * @package MSBios\Session\Factory
  */
-class MongoDBHandlerFactory implements FactoryInterface
+class MongoDBFactory implements FactoryInterface
 {
     /**
      * @param ContainerInterface $container
@@ -27,12 +27,19 @@ class MongoDBHandlerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /** @var array $options */
-        $options = $container->get(Module::class);
+        /** @var array $config */
+        $config = $container->get(Module::class)['handlers'];
+
+        /**
+         * Can be override
+         */
+        if (! is_null($options) && is_array($options)) {
+            $config = array_merge($config, $options);
+        }
 
         return new MongoDB(
             $container->get(Client::class),
-            new MongoDBOptions($options[MongoDBOptions::class])
+            new MongoDBOptions($config[$requestedName])
         );
     }
 }

@@ -3,12 +3,15 @@
  * @access protected
  * @author Judzhin Miles <info[woof-woof]msbios.com>
  */
+
 namespace MSBios\Session;
 
+use Zend\Session\ManagerInterface;
+
 /**
- * Interface ContainerInterface
+ * Interface SessionManagerInterface
  * @package MSBios\Session
  */
-interface ContainerInterface
+interface SessionManagerInterface extends ManagerInterface
 {
 }

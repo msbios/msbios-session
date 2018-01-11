@@ -12,6 +12,7 @@ use MSBios\Session\ContainerAwareTrait;
 use MSBios\Session\SessionManagerAwareInterface;
 use MSBios\Session\SessionManagerAwareTrait;
 use Zend\Session\Container;
+use Zend\View\Model\ViewModel;
 
 /**
  * Class IndexController
@@ -35,7 +36,10 @@ class IndexController extends DefaultIndexController implements
         /** @var Container $container */
         $container = $this->getContainer();
         $container->foo = 'bar';
+        $container->now = time();
 
-        return parent::indexAction();
+        return new ViewModel([
+            'container' => $container
+        ]);
     }
 }

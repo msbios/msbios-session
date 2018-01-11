@@ -28,6 +28,5 @@ class SessionManagerInitializer implements InitializerInterface
                 $container->get(SessionManager::class)
             );
         }
-
     }
 }

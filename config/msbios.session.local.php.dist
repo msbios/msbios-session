@@ -12,18 +12,6 @@ return [
 
     'service_manager' => [
         'factories' => [
-            Module::class =>
-                Factory\ModuleFactory::class,
-
-            ContainerInterface::class =>
-                Factory\ContainerFactory::class,
-
-            SessionManagerInterface::class =>
-                Factory\SessionManagerFactory::class,
-
-            Session\SaveHandler\MongoDB::class =>
-                Factory\MongoDBFactory::class,
-
             /** For global Zend SessionManager */
             // Session\SaveHandler\SaveHandlerInterface::class =>
             //     Factory\MongoDBFactory::class

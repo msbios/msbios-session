@@ -8,10 +8,20 @@ namespace MSBios\Session;
 
 use MSBios\ModuleInterface;
 use Zend\EventManager\EventInterface;
+use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Loader\AutoloaderFactory;
 use Zend\Loader\StandardAutoloader;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
+use Zend\Mvc\ModuleRouteListener;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Session\Container;
+use Zend\Session\ManagerInterface;
+use Zend\Session\Validator\HttpUserAgent;
+use Zend\Session\Validator\RemoteAddr;
+use Zend\Stdlib\ParametersInterface;
+use Zend\Stdlib\RequestInterface;
 
 /**
  * Class Module
@@ -57,64 +67,73 @@ class Module implements
      */
     public function onBootstrap(EventInterface $e)
     {
-//        /** @var ServiceLocatorInterface $serviceManager */
-//        $serviceManager = $e->getApplication()
-//            ->getServiceManager();
-//
-//        /** @var array $config */
-//        $config = $serviceManager->get(self::class);
-//
-//        if (!isset($config['use_save_handler']) || !$config['use_save_handler']) {
-//            return;
-//        }
-//
-//        /** @var ManagerInterface $session */
-//        $session = $serviceManager->get(SessionManager::class);
-////        // $session->start();
-////
-////        /** @var Container $container */
-////        $container = new Container('initialized');
-////
-////        if (isset($container->init)) {
-////            return;
-////        }
-////
-////        /** @var  $request */
-////        $request = $serviceManager->get('Request');
-////
-////        r($request); die();
-////
-////        $session->regenerateId(true);
-////        $container->init = 1;
-////        $container->remoteAddr = $request->getServer()->get('REMOTE_ADDR');
-////        $container->httpUserAgent = $request->getServer()->get('HTTP_USER_AGENT');
-////
-////        $config = $serviceManager->get('Config');
-////        if (!isset($config['session'])) {
-////            return;
-////        }
-////
-////        $sessionConfig = $config['session'];
-////
-////        if (!isset($sessionConfig['validators'])) {
-////            return;
-////        }
-////
-////        $chain = $session->getValidatorChain();
-////
-////        foreach ($sessionConfig['validators'] as $validator) {
-////            switch ($validator) {
-////                case HttpUserAgent::class:
-////                    $validator = new $validator($container->httpUserAgent);
-////                    break;
-////                case RemoteAddr::class:
-////                    $validator = new $validator($container->remoteAddr);
-////                    break;
-////                default:
-////                    $validator = new $validator();
-////            }
-////
-////            $chain->attach('session.validate', [$validator, 'isValid']);
-////        }
+        /** @var EventManagerInterface $eventManager */
+        $eventManager = $e->getApplication()
+            ->getEventManager();
+
+        /** @var ListenerAggregateInterface $moduleRouteListener */
+        $moduleRouteListener = new ModuleRouteListener;
+        $moduleRouteListener->attach($eventManager);
+        $this->bootstrapSession($e);
+    }
+
+    /**
+     * @param EventInterface $e
+     */
+    protected function bootstrapSession(EventInterface $e)
+    {
+        /** @var ServiceLocatorInterface $serviceManager */
+        $serviceManager = $e->getApplication()
+            ->getServiceManager();
+
+        /** @var ManagerInterface $sessionManager */
+        $sessionManager = $serviceManager->get(SessionManagerInterface::class);
+        $sessionManager->start();
+
+        /** @var Container $container */
+        $container = new Container('initialized');
+
+        if (isset($container->init)) {
+            return;
+        }
+
+        /** @var RequestInterface $request */
+        $request = $serviceManager->get('Request');
+
+        /** @var ParametersInterface $server */
+        $server = $request->getServer();
+
+        $sessionManager->regenerateId(true);
+        $container->init = 1;
+        $container->remoteAddr = $server->get('REMOTE_ADDR');
+        $container->httpUserAgent = $server->get('HTTP_USER_AGENT');
+
+        $config = $serviceManager->get('Config');
+        if (! isset($config['session_manager'])) {
+            return;
+        }
+
+        $sessionConfig = $config['session_manager'];
+
+        if (! isset($sessionConfig['validators'])) {
+            return;
+        }
+
+        $chain = $sessionManager->getValidatorChain();
+
+        foreach ($sessionConfig['validators'] as $validator) {
+            switch ($validator) {
+                case HttpUserAgent::class:
+                    $validator = new $validator($container->httpUserAgent);
+                    break;
+                case RemoteAddr::class:
+                    $validator = new $validator($container->remoteAddr);
+                    break;
+                default:
+                    $validator = new $validator();
+            }
+
+            $chain->attach('session.validate', [$validator, 'isValid']);
+        }
     }
 }

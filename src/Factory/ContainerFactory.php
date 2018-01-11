@@ -26,7 +26,7 @@ class ContainerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var array $options */
-        $options = $container->get(Module::class);
-        return new Container($options['default_container_name']);
+        $config = $container->get(Module::class);
+        return new Container($config['default_container_name']);
     }
 }

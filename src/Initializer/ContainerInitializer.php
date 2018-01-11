@@ -6,7 +6,6 @@
 
 namespace MSBios\Session\Initializer;
 
-
 use Interop\Container\ContainerInterface;
 use MSBios\Session\ContainerAwareInterface;
 use Zend\ServiceManager\Initializer\InitializerInterface;
@@ -28,6 +27,5 @@ class ContainerInitializer implements InitializerInterface
                 $container->get(\MSBios\Session\ContainerInterface::class)
             );
         }
-
     }
 }

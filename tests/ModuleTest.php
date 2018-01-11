@@ -3,14 +3,14 @@
  * @access protected
  * @author Judzhin Miles <info[woof-woof]msbios.com>
  */
-namespace MSBiosTest\Application;
+namespace MSBiosTest\Session;
 
-use MSBios\Application\Module;
+use MSBios\Session\Module;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class ModuleTest
- * @package MSBiosTest\Application
+ * @package MSBiosTest\Session
  */
 class ModuleTest extends TestCase
 {

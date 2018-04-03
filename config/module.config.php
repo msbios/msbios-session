@@ -88,6 +88,5 @@ return [
             ],
             // ... and more handlers in future
         ]
-
     ]
 ];

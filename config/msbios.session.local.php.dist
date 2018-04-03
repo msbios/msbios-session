@@ -6,54 +6,43 @@
 
 namespace MSBios\Session;
 
-use Zend\Session;
+use MSBios\Session\Initializer\ContainerInitializer;
+use MSBios\Session\Initializer\SessionManagerInitializer;
+use Zend\ServiceManager\Factory\InvokableFactory;
+use Zend\Session\SaveHandler\MongoDB;
 
 return [
+    \MSBios\MongoDB\Module::class => [
 
-    'service_manager' => [
-        'factories' => [
-            /** For global Zend SessionManager */
-            // Session\SaveHandler\SaveHandlerInterface::class =>
-            //     Factory\MongoDBFactory::class
-        ]
-    ],
+        \MongoDB\Client::class => [
+            /**
+             *
+             * Expects: string
+             * Default: mongodb://127.0.0.1/
+             */
+            'uri' => 'mongodb://localhost/',
 
-    'session_config' => [
-        'name' => Module::class,
-        'options' => [
-        ]
-    ],
-
-    'session_storage' => [
-        'type' => Session\Storage\SessionArrayStorage::class,
-        'options' => []
-    ],
-
-    /**
-     * Global session manager setting v3
-     */
-    'session_manager' => [
-        'config' => [
-            'class' => Session\Config\SessionConfig::class,
-            'options' => [
-                'name' => Module::class,
+            /**
+             *
+             * Expects: array
+             * Default: []
+             */
+            'uriOptions' => [
+                //...
             ],
-        ],
-        'storage' => Session\Storage\SessionArrayStorage::class,
-        'validators' => [
-            Session\Validator\RemoteAddr::class,
-            Session\Validator\HttpUserAgent::class,
-        ],
+
+            /**
+             *
+             * Expects: array
+             * Default: []
+             */
+            'driverOptions' => [
+                //...
+            ]
+        ]
     ],
 
     Module::class => [
-
-        /**
-         *
-         * Expects: string
-         * Default: \Module\Session\Module
-         */
-        'default_container_name' => Module::class,
 
         /**
          *
@@ -63,18 +52,17 @@ return [
          *     MSBios\Session\SaveHandler\MongoDB::class
          * ]
          */
-        'save_handler' => Session\SaveHandler\SaveHandlerInterface::class,
+        'save_handler' => MongoDB::class,
 
         /**
          *
          * Expects: array
          */
         'handlers' => [
-            Session\SaveHandler\MongoDB::class => [
-                'database' => 'some-database-name',
+            MongoDB::class => [
+                'database' => 'openpower',
                 'collection' => 'some-collection-name'
             ],
-            // ... and more handlers in future
         ]
 
     ]

@@ -39,7 +39,7 @@ class MongoDBFactory implements FactoryInterface
 
         return new MongoDB(
             $container->get(Client::class),
-            new MongoDBOptions($config[$requestedName])
+            new MongoDBOptions($config[MongoDB::class])
         );
     }
 }

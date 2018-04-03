@@ -9,6 +9,7 @@ namespace MSBios\Session;
 use MSBios\Session\Initializer\ContainerInitializer;
 use MSBios\Session\Initializer\SessionManagerInitializer;
 use Zend\ServiceManager\Factory\InvokableFactory;
+use Zend\Session\SaveHandler\MongoDB;
 
 return [
 
@@ -47,7 +48,7 @@ return [
              * Expects: string
              * Default: mongodb://127.0.0.1/
              */
-            'uri' => 'mongodb://127.0.0.1/',
+            'uri' => 'mongodb://demo.gns-it.com/',
 
             /**
              *
@@ -68,4 +69,30 @@ return [
             ]
         ]
     ],
+
+    Module::class => [
+
+        /**
+         *
+         * Expects: string
+         * Default: Zend\Session\Session\SaveHandler\SaveHandlerInterface
+         * Examples: [
+         *     MSBios\Session\SaveHandler\MongoDB::class
+         * ]
+         */
+        'save_handler' => MongoDB::class,
+
+        /**
+         *
+         * Expects: array
+         */
+        'handlers' => [
+            MongoDB::class => [
+                'database' => 'openpower',
+                'collection' => md5(__NAMESPACE__)
+            ],
+            // ... and more handlers in future
+        ]
+
+    ]
 ];

@@ -30,9 +30,6 @@ class IndexController extends DefaultIndexController implements
      */
     public function indexAction()
     {
-
-        // r($this->getSessionManager()); die();
-
         /** @var Container $container */
         $container = $this->getContainer();
         $container->foo = 'bar';

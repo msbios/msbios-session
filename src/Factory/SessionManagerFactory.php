@@ -8,8 +8,6 @@ namespace MSBios\Session\Factory;
 
 use Interop\Container\ContainerInterface;
 use MSBios\Session\Module;
-use Zend\Session\Config\ConfigInterface;
-use Zend\Session\Config\SessionConfig;
 use Zend\Session\Container;
 use Zend\Session\ManagerInterface;
 use Zend\Session\Service\SessionManagerFactory as DefaultSessionManager;

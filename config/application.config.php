@@ -6,7 +6,9 @@
 return [
     // Retrieve list of modules used in this application.
     'modules' => [
-
+        'MSBios\Cache',
+        'Zend\Cache',
+        'Zend\Serializer',
         'Zend\I18n',
         'Zend\Mvc\Plugin\FilePrg',
         'Zend\Form',

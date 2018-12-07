@@ -5,6 +5,7 @@
  */
 namespace MSBios\Session;
 
+use Zend\Console\Console;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;
@@ -30,8 +31,10 @@ class ListenerAggregate extends AbstractListenerAggregate
      */
     public function attach(EventManagerInterface $events, $priority = 1)
     {
-        $this->listeners[] = $events
-            ->attach(MvcEvent::EVENT_BOOTSTRAP, [$this, 'onBootstrap'], $priority);
+        if (! Console::isConsole()) {
+            $this->listeners[] = $events
+                ->attach(MvcEvent::EVENT_BOOTSTRAP, [$this, 'onBootstrap'], $priority);
+        }
     }
 
     /**

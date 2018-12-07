@@ -18,15 +18,17 @@ use Zend\Session\Container;
 class ContainerFactory implements FactoryInterface
 {
     /**
+     * @inheritdoc
+     *
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
-     * @return Container
+     * @return object|Container
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var array $options */
-        $config = $container->get(Module::class);
+        $config = $container->build(Module::class, $options);
         return new Container($config['default_container_name']);
     }
 }

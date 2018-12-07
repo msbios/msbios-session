@@ -4,16 +4,15 @@
  * @author Judzhin Miles <info[woof-woof]msbios.com>
  */
 
-namespace MSBios\Session\Initializer;
+namespace MSBios\Session;
 
 use Interop\Container\ContainerInterface;
-use MSBios\Session\SessionManagerAwareInterface;
 use Zend\ServiceManager\Initializer\InitializerInterface;
 use Zend\Session\SessionManager;
 
 /**
  * Class SessionManagerInitializer
- * @package MSBios\Session\Initializer
+ * @package MSBios\Session
  */
 class SessionManagerInitializer implements InitializerInterface
 {
@@ -28,5 +27,14 @@ class SessionManagerInitializer implements InitializerInterface
                 $container->get(SessionManager::class)
             );
         }
+    }
+
+    /**
+     * @param $an_array
+     * @return SessionManagerInitializer
+     */
+    public static function __set_state($an_array)
+    {
+        return new self();
     }
 }

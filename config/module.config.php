@@ -6,6 +6,8 @@
 
 namespace MSBios\Session;
 
+use MSBios\Factory\ModuleFactory;
+use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\Session;
 
 return [
@@ -13,7 +15,7 @@ return [
     'service_manager' => [
         'factories' => [
             Module::class =>
-                Factory\ModuleFactory::class,
+                ModuleFactory::class,
 
             ContainerInterface::class =>
                 Factory\ContainerFactory::class,
@@ -27,18 +29,25 @@ return [
             /** For global Zend SessionManager */
             // Session\SaveHandler\SaveHandlerInterface::class =>
             //     Factory\MongoDBFactory::class
+
+            // listeners
+            ListenerAggregate::class =>
+                InvokableFactory::class
         ]
     ],
 
     'session_config' => [
         'name' => Module::class,
         'options' => [
+            // ...
         ]
     ],
 
     'session_storage' => [
         'type' => Session\Storage\SessionArrayStorage::class,
-        'options' => []
+        'options' => [
+            // ...
+        ]
     ],
 
     /**
@@ -88,5 +97,9 @@ return [
             ],
             // ... and more handlers in future
         ]
+    ],
+
+    'listeners' => [
+        ListenerAggregate::class
     ]
 ];

@@ -17,9 +17,11 @@ use Zend\Session\SessionManager;
  * Class SessionManagerFactory
  * @package MSBios\Session\Factory
  */
-class SessionManagerFactory extends DefaultSessionManager // implements FactoryInterface
+class SessionManagerFactory extends DefaultSessionManager
 {
     /**
+     * @inheritdoc
+     *
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
@@ -27,19 +29,15 @@ class SessionManagerFactory extends DefaultSessionManager // implements FactoryI
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-
         /** @var ManagerInterface $sessionManager */
         $sessionManager = parent::__invoke($container, $requestedName, $options);
 
-        /** @var array $config */
-        $config = $container->get(Module::class);
+        /** @var array $defaultOptions */
+        $defaultOptions = $container->build(Module::class, $options);
 
-        /** @var string $saveHandler */
-        $saveHandler = $config['save_handler'];
-
-        if ($container->has($saveHandler)) {
+        if ($container->has($defaultOptions['save_handler'])) {
             $sessionManager->setSaveHandler(
-                $container->get($saveHandler)
+                $container->get($defaultOptions['save_handler'])
             );
         }
 

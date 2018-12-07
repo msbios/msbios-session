@@ -18,7 +18,6 @@ return [
         'Zend\Mvc\Plugin\FlashMessenger',
         'Zend\Mvc\Plugin\Identity',
         'Zend\Mvc\Plugin\Prg',
-        'Zend\Log',
         'Zend\Session',
         'Zend\Router',
         'Zend\Validator',

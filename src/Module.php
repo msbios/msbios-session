@@ -13,7 +13,7 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 
 /**
  * Class Module
- * @package MSBios\Application
+ * @package MSBios\Session
  */
 class Module implements
     ModuleInterface,

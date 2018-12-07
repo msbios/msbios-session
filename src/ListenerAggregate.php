@@ -3,12 +3,13 @@
  * @access protected
  * @author Judzhin Miles <info[woof-woof]msbios.com>
  */
+
 namespace MSBios\Session;
 
-use Zend\Console\Console;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;
+use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\Container;
@@ -31,10 +32,8 @@ class ListenerAggregate extends AbstractListenerAggregate
      */
     public function attach(EventManagerInterface $events, $priority = 1)
     {
-        if (! Console::isConsole()) {
-            $this->listeners[] = $events
-                ->attach(MvcEvent::EVENT_BOOTSTRAP, [$this, 'onBootstrap'], $priority);
-        }
+        $this->listeners[] = $events
+            ->attach(MvcEvent::EVENT_BOOTSTRAP, [$this, 'onBootstrap'], $priority);
     }
 
     /**
@@ -57,10 +56,16 @@ class ListenerAggregate extends AbstractListenerAggregate
             return;
         }
 
+        /** @var Request $request */
+        $request = $serviceManager
+            ->get('Request');
+
+        if (! $request instanceof Request) {
+            return;
+        }
+
         /** @var ParametersInterface $server */
-        $server = $serviceManager
-            ->get('Request')
-            ->getServer();
+        $server = $request->getServer();
 
         $sessionManager->regenerateId(true);
         $container->init = true;

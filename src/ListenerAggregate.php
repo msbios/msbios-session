@@ -47,7 +47,17 @@ class ListenerAggregate extends AbstractListenerAggregate
 
         /** @var ManagerInterface $sessionManager */
         $sessionManager = $serviceManager->get(SessionManagerInterface::class);
-        $sessionManager->start();
+
+        try {
+            $sessionManager->start();
+        } catch (\Exception $exception) {
+            /**
+             * Session validation failed: toast it and carry on.
+             */
+            // @codeCoverageIgnoreStart
+            session_unset();
+            // @codeCoverageIgnoreEnd
+        }
 
         /** @var Container $container */
         $container = new Container(self::class);

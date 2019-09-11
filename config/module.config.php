@@ -14,8 +14,8 @@ return [
 
     'service_manager' => [
         'factories' => [
-            Module::class =>
-                ModuleFactory::class,
+            // Module::class =>
+            //     ModuleFactory::class,
 
             ContainerInterface::class =>
                 Factory\ContainerFactory::class,

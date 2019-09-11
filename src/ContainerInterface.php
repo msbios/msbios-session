@@ -11,4 +11,5 @@ namespace MSBios\Session;
  */
 interface ContainerInterface
 {
+    // ...
 }

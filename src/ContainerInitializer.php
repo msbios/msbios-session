@@ -16,6 +16,8 @@ use Zend\ServiceManager\Initializer\InitializerInterface;
 class ContainerInitializer implements InitializerInterface
 {
     /**
+     * @inheritdoc
+     *
      * @param InteropContainerInterface $container
      * @param object $instance
      */
@@ -29,6 +31,8 @@ class ContainerInitializer implements InitializerInterface
     }
 
     /**
+     * @inheritdoc
+     *
      * @param $an_array
      * @return ContainerInitializer
      */

@@ -50,6 +50,58 @@ class ListenerAggregate extends AbstractListenerAggregate
 
         try {
             $sessionManager->start();
+
+            /** @var Container $container */
+            $container = new Container(self::class);
+
+            if (isset($container->init)) {
+                return;
+            }
+
+            /** @var Request $request */
+            $request = $serviceManager
+                ->get('Request');
+
+            if (! $request instanceof Request) {
+                return;
+            }
+
+            /** @var ParametersInterface $server */
+            $server = $request->getServer();
+
+            $sessionManager->regenerateId(true);
+            $container->init = true;
+            $container->remoteAddr = $server->get('REMOTE_ADDR');
+            $container->httpUserAgent = $server->get('HTTP_USER_AGENT');
+
+            /** @var array $config */
+            $config = $serviceManager->get('config');
+            if (! isset($config['session_manager'])) {
+                return;
+            }
+
+            $sessionConfig = $config['session_manager'];
+
+            if (! isset($sessionConfig['validators'])) {
+                return;
+            }
+
+            $chain = $sessionManager->getValidatorChain();
+
+            foreach ($sessionConfig['validators'] as $validator) {
+                switch ($validator) {
+                    case HttpUserAgent::class:
+                        $validator = new $validator($container->httpUserAgent);
+                        break;
+                    case RemoteAddr::class:
+                        $validator = new $validator($container->remoteAddr);
+                        break;
+                    default:
+                        $validator = new $validator();
+                }
+
+                $chain->attach('session.validate', [$validator, 'isValid']);
+            }
         } catch (\Exception $exception) {
             /**
              * Session validation failed: toast it and carry on.
@@ -57,58 +109,6 @@ class ListenerAggregate extends AbstractListenerAggregate
             // @codeCoverageIgnoreStart
             session_unset();
             // @codeCoverageIgnoreEnd
-        }
-
-        /** @var Container $container */
-        $container = new Container(self::class);
-
-        if (isset($container->init)) {
-            return;
-        }
-
-        /** @var Request $request */
-        $request = $serviceManager
-            ->get('Request');
-
-        if (! $request instanceof Request) {
-            return;
-        }
-
-        /** @var ParametersInterface $server */
-        $server = $request->getServer();
-
-        $sessionManager->regenerateId(true);
-        $container->init = true;
-        $container->remoteAddr = $server->get('REMOTE_ADDR');
-        $container->httpUserAgent = $server->get('HTTP_USER_AGENT');
-
-        /** @var array $config */
-        $config = $serviceManager->get('config');
-        if (! isset($config['session_manager'])) {
-            return;
-        }
-
-        $sessionConfig = $config['session_manager'];
-
-        if (! isset($sessionConfig['validators'])) {
-            return;
-        }
-
-        $chain = $sessionManager->getValidatorChain();
-
-        foreach ($sessionConfig['validators'] as $validator) {
-            switch ($validator) {
-                case HttpUserAgent::class:
-                    $validator = new $validator($container->httpUserAgent);
-                    break;
-                case RemoteAddr::class:
-                    $validator = new $validator($container->remoteAddr);
-                    break;
-                default:
-                    $validator = new $validator();
-            }
-
-            $chain->attach('session.validate', [$validator, 'isValid']);
         }
     }
 }

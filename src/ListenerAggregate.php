@@ -17,6 +17,7 @@ use Zend\Session\ManagerInterface;
 use Zend\Session\Validator\HttpUserAgent;
 use Zend\Session\Validator\RemoteAddr;
 use Zend\Stdlib\ParametersInterface;
+use Zend\Stdlib\RequestInterface;
 
 /**
  * Class ListenerAggregate
@@ -58,11 +59,11 @@ class ListenerAggregate extends AbstractListenerAggregate
                 return;
             }
 
-            /** @var Request $request */
+            /** @var RequestInterface|Request $request */
             $request = $serviceManager
                 ->get('Request');
 
-            if (! $request instanceof Request) {
+            if (! $request instanceof RequestInterface) {
                 return;
             }
 

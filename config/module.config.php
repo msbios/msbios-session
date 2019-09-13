@@ -6,7 +6,6 @@
 
 namespace MSBios\Session;
 
-use MSBios\Factory\ModuleFactory;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\Session;
 
@@ -14,9 +13,6 @@ return [
 
     'service_manager' => [
         'factories' => [
-            // Module::class =>
-            //     ModuleFactory::class,
-
             ContainerInterface::class =>
                 Factory\ContainerFactory::class,
 
@@ -62,8 +58,8 @@ return [
         ],
         'storage' => Session\Storage\SessionArrayStorage::class,
         'validators' => [
-            Session\Validator\RemoteAddr::class,
-            Session\Validator\HttpUserAgent::class,
+            // Session\Validator\RemoteAddr::class,
+            // Session\Validator\HttpUserAgent::class,
         ],
     ],
 

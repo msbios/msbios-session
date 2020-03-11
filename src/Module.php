@@ -13,25 +13,27 @@ namespace MSBios\Session;
 class Module extends \MSBios\Module
 {
     /** @const VERSION */
-    const VERSION = '1.0.7';
+    const VERSION = '2.0.0';
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @return string
      */
-    protected function getDir()
+    protected function getDir(): string
     {
         return __DIR__;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @return string
      */
-    protected function getNamespace()
+    protected function getNamespace(): string
     {
         return __NAMESPACE__;
     }
+
+
 }
